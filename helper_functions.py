@@ -3,10 +3,34 @@ import datetime
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-def unzip_data(url, zip_name):
-  !wget url
+def load_and_prep_image(filename, img_shape=224, scale=True):
+  """
+    Reads in an image from filename, turns it into a tensor and reshapes into (224,224,3)
 
-  zip_ref = zipfile.ZipFile(zip_name)
+    Parameters:
+      filename (str): filename of target image
+      img_shape (int): size to resize target image to, default 224
+      scale (bool): wheter to scale pixel values to range(0,1), default True
+  """
+
+  img = tf.io.read_file(filename)
+  img = tf.image_decode_jpeg(img)
+  img = tf.image.resize(img, [img_shape, img_shape])
+
+  if scale:
+    return img/255.
+  else:
+    return im
+
+
+def unzip_data(filename):
+  """
+    Unzips filename into the current working directory.
+
+    Args:
+      filename (str): a filepath to a target zip folder to be unzipped.
+  """
+  zip_ref = zipfile.ZipFile(filename, "r")
   zip_ref.extractall()
   zip_ref.close()
 
