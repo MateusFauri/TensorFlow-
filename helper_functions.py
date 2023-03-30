@@ -14,13 +14,13 @@ def load_and_prep_image(filename, img_shape=224, scale=True):
   """
 
   img = tf.io.read_file(filename)
-  img = tf.image_decode_jpeg(img)
+  img = tf.io.decode_image(img)
   img = tf.image.resize(img, [img_shape, img_shape])
 
   if scale:
     return img/255.
   else:
-    return im
+    return img
 
 
 def unzip_data(filename):
