@@ -96,3 +96,38 @@ def plot_loss_curves(history):
   plt.title("Accuracy")
   plt.xlabel("Epochs")
   plt.legend()
+  
+
+def compare_historys(original, new, initial_epochs=5):
+  """
+    Compares two TensorFlow History objects.
+  """
+
+  acc = original.history["accuracy"]
+  loss = original.history["loss"]
+
+  val_acc = original.history["val_accuracy"]
+  val_loss = original.history["val_loss"]
+
+  total_acc = acc + new.history["accuracy"]
+  total_loss = loss + new.history["loss"]
+
+  total_val_acc = val_acc + new.history["val_accuracy"]
+  total_val_loss = val_loss + new.history["val_loss"]
+
+  plt.figure(figsize=(8,8))
+  plt.subplot(2,1,1)
+  plt.plot(total_acc, label="Training Accuracy")
+  plt.plot(total_val_acc, label="Val Accuracy")  
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label='Start Fine Tuning')
+  plt.legend(loc="lower right")
+  plt.title("Training and Validation Accuracy")
+
+  plt.figure(figsize=(8,8))
+  plt.subplot(2,1,1)
+  plt.plot(total_loss, label="Training Loss")
+  plt.plot(total_val_loss, label="Val Loss")  
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label='Start Fine Tuning')
+  plt.legend(loc="upper right")
+  plt.title("Training and Validation Loss")
+
